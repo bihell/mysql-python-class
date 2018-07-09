@@ -5,6 +5,9 @@ MySQL Python Class
 
 **Python MySQL class** helps the python developers to connect with MySQL and use queries like: SELECT (one and more conditions), INSERT, UPDATE, DELETE in an easy and fast way.
 
+`mysql_python.py` for MySQLdb
+`mysql_connect.py` for [mysql.connector](https://dev.mysql.com/doc/connector-python/en/)
+
 ## Usage
 
 To start using the **Python MySQL class** you need to import the class and initialize with 4 required parameters: `host`, `user`, `password`, `database`
@@ -30,7 +33,7 @@ If you want to obtain information from one table and use one condition, you coul
 
 ---
 
-#### Select more than one condition
+#### Select more than one condition (mysql_python.py)
 
 In case you have need to obtain information with more than one condition, you could use the `select_advanced`function, where the columns you need to obtain are referenced by `args` and the conditionals are referenced by `tuples`
 
@@ -41,6 +44,25 @@ In case you have need to obtain information with more than one condition, you co
 ```
 
 *Note: Inside the `sql_advanced` function the order of the parameters matters, so the `tuples` should have the order of the query.*
+
+**Result:**
+  The function return a list or empty list in case of not find nothing.
+
+---
+
+#### Complex select (mysql_connect.py)
+
+Just compose your SQL statement.
+
+```python
+query = ("SELECT first_name, last_name, hire_date FROM employees "
+         "WHERE hire_date BETWEEN %s AND %s")
+
+hire_start = datetime.date(1999, 1, 1)
+hire_end = datetime.date(1999, 12, 31)
+
+result = connect_mysql.select_advanced(query, (hire_start, hire_end))
+```
 
 **Result:**
   The function return a list or empty list in case of not find nothing.
@@ -60,7 +82,23 @@ The function return the last row id was inserted.
 
 ---
 
-### Update data
+#### Insert data in bulk(mysql_connect.py)
+
+Inserting data is really simple and intuitive, where we are going to reference the column and the values
+
+```python
+data = [
+  ('Jane', date(2005, 2, 12)),
+  ('Joe', date(2006, 5, 23)),
+  ('John', date(2010, 10, 3)),
+]
+stmt = "INSERT INTO employees (first_name, hire_date) VALUES (%s, %s)"
+connect_mysql.insert_bulk(stmt, data)
+```
+
+---
+
+#### Update data
 
 To update data just needs the table, conditional query and specify the columns you want update
 
@@ -68,6 +106,25 @@ To update data just needs the table, conditional query and specify the columns y
 conditional_query = 'car_make = %s'
 
 result = connect_mysql.update('car_table', conditional_query, 'nissan', car_model='escort', car_year='2005')
+```
+
+**Result:**
+This function return the amount of rows updated.
+
+---
+
+#### Complex Update data(mysql_connect.py)
+
+Just compose your SQL statement.
+
+```python
+ stmt = '''
+    update bussiness_table
+    set businesstype=20 
+    where id in (''' + ','.join(id_list) + ''')
+    '''
+
+    result = connect_mysql.update_advanced(stmt)
 ```
 
 **Result:**
@@ -90,4 +147,4 @@ This function return the amount of rows deleted.
 
 ## Requirements
 
-MySQL-python >= 1.2.5
+MySQL-python >= 1.2.5 or mysql-connector >= 2.1.6
