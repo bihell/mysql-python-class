@@ -1,11 +1,14 @@
 MySQL Python Class
 ===========
 
+[中文文档](http://www.bihell.com/2018/07/09/mysql-python-class/)
+
 ## Description
 
 **Python MySQL class** helps the python developers to connect with MySQL and use queries like: SELECT (one and more conditions), INSERT, UPDATE, DELETE in an easy and fast way.
 
 `mysql_python.py` for MySQLdb
+
 `mysql_connect.py` for [mysql.connector](https://dev.mysql.com/doc/connector-python/en/)
 
 ## Usage
@@ -13,7 +16,7 @@ MySQL Python Class
 To start using the **Python MySQL class** you need to import the class and initialize with 4 required parameters: `host`, `user`, `password`, `database`
 
 ```python
-from mysql-python import MysqlPython
+from mysql_connect import MysqlConnect
 
 connect_mysql = MysqlPython('host.ip.address', 'user', 'password', 'database')
 ```
@@ -84,7 +87,7 @@ The function return the last row id was inserted.
 
 #### Insert data in bulk(mysql_connect.py)
 
-Inserting data is really simple and intuitive, where we are going to reference the column and the values
+Inserting data in bulk. mysql.connect will automatically splicing statements.
 
 ```python
 data = [
